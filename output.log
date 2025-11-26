@@ -1,0 +1,87 @@
+바이낸스 HFT 스크리너를 시작합니다...
+설정 로드 완료: &{TargetMarkets:[SPOT FUTURE] QuoteAssets:[USDT USDC BTC ETH] WorkerLimit:50 ClickhouseDSN:clickhouse://localhost:9000}
+바이낸스에서 거래 가능한 심볼 목록을 가져오는 중...
+주의: 목업 데이터를 사용합니다. (https://api3.binance.com/api/v3/exchangeInfo)
+주의: 목업 데이터를 사용합니다. (https://fapi3.binance.com/fapi/v1/exchangeInfo)
+총 12개의 심볼을 가져왔습니다. 필터링을 시작합니다...
+필터링 완료. 9개의 심볼이 최종 선택되었습니다.
+선택된 심볼 (상위 9개): [BTCUSDT ETHUSDT ADABTC LTCUSDC SOLBTC XRPETH BTCUSDT ETHUSDT ADAUSDT_PERP]
+데이터베이스 연결을 설정합니다 (목업)...
+데이터베이스 (목업)가 준비되었습니다.
+50개의 워커를 생성하여 초기 데이터 로딩을 시작합니다...
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+[DB 목업] 1000개의 캔들 데이터를 ClickHouse에 Batch Insert합니다.
+모든 초기 캔들 데이터 로딩이 완료되었습니다.
+메모리에 49개의 '심볼-타임프레임' 조합이 저장되었습니다.
+목업 WebSocket 스트림을 시작합니다...
+[디버그] LTCUSDC-1h-MA-7 | PrevClose: 103.2249, CurrentPrice: 103.6803, Indicator: 103.4271
+[디버그] LTCUSDC-1h-EMA-7 | PrevClose: 103.2249, CurrentPrice: 103.6803, Indicator: 103.2779
+[디버그] LTCUSDC-1h-MA-25 | PrevClose: 103.2249, CurrentPrice: 103.6803, Indicator: 102.5193
+[디버그] LTCUSDC-1h-EMA-25 | PrevClose: 103.2249, CurrentPrice: 103.6803, Indicator: 102.6367
+[디버그] LTCUSDC-1h-MA-100 | PrevClose: 103.2249, CurrentPrice: 103.6803, Indicator: 101.8276
+[디버그] LTCUSDC-1h-EMA-100 | PrevClose: 103.2249, CurrentPrice: 103.6803, Indicator: 101.5807
+[디버그] LTCUSDC-1h-MA-200 | PrevClose: 103.2249, CurrentPrice: 103.6803, Indicator: 100.5725
+[디버그] LTCUSDC-1h-EMA-200 | PrevClose: 103.2249, CurrentPrice: 103.6803, Indicator: 101.2752
+[신호 감지] LTCUSDC-1h | MA 돌파 (7) | 가격: 103.6803 | 거래대금: 0.00
+[신호 감지] LTCUSDC-1h | EMA 돌파 (7) | 가격: 103.6803 | 거래대금: 0.00

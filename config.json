@@ -1,0 +1,6 @@
+{
+  "target_markets": ["SPOT", "FUTURE"],
+  "quote_assets": ["USDT", "USDC", "BTC", "ETH"],
+  "worker_limit": 50,
+  "clickhouse_dsn": "clickhouse://localhost:9000"
+}

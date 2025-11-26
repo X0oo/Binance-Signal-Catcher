@@ -71,8 +71,8 @@ type Kline struct {
 type Alert struct {
 	Symbol    string
 	Timeframe string
-	Type      string    // 예: "MA 돌파", "EMA 이탈"
-	Period    int       // 이동평균 기간 (7, 25, 100, 200)
+	Type      string    // "Breakout" 또는 "Breakdown"
+	Indicator string    // 예: "MA_7", "EMA_25"
 	Price     float64   // 신호 발생 시점의 가격
 	Volume    float64   // 정렬 기준이 되는 24시간 거래대금
 	Timestamp time.Time // 신호 발생 시간
@@ -82,7 +82,6 @@ type Alert struct {
 
 func main() {
 	// --- 초기 설정 ---
-	fmt.Println("바이낸스 HFT 스크리너를 시작합니다...")
 	// 모든 고루틴의 생명주기를 관리하고, 우아한 종료를 가능하게 하는 context 생성
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel() // main 함수가 끝나기 직전 모든 고루틴에 종료 신호를 보냄
@@ -93,6 +92,9 @@ func main() {
 		fmt.Printf("치명적 오류: 설정 파일 로드 실패: %v\n", err)
 		return
 	}
+
+	// 시작 메시지 출력
+	printStartMessage(config)
 
 	// --- 1단계: 동적 심볼 탐색 ---
 	// 바이낸스 API(목업)를 통해 설정에 맞는 심볼 목록을 필터링하여 가져옴
@@ -138,6 +140,18 @@ func main() {
 // ============== 핵심 기능별 함수 구현 ==============
 
 // --- 시스템 및 설정 관련 함수 ---
+
+// printStartMessage는 프로그램 시작 시 고정된 형식의 헤더를 출력합니다.
+func printStartMessage(config *Config) {
+	border := "=================================================="
+	fmt.Println(border)
+	fmt.Println("   HFT Screener Started")
+	// 설정 파일에 있는 모든 타겟을 표시하도록 수정
+	fmt.Printf("   Targets: %s\n", strings.Join(config.QuoteAssets, ", "))
+	fmt.Printf("   Timeframes: %s\n", strings.Join(Timeframes, ", "))
+	fmt.Println("   Update Interval: 1s")
+	fmt.Println(border)
+}
 
 // loadInitialData는 워커풀을 생성하고 작업을 분배하여 초기 캔들 데이터 로딩을 총괄합니다.
 func loadInitialData(config *Config, symbols []string, db *Database) *CandleStore {
@@ -405,13 +419,22 @@ func (e *AnalysisEngine) checkCondition(symbol, timeframe, indicatorType string,
 		// 동일 캔들 내에서 중복 알림이 발생하지 않도록 체크
 		if !ok || lastAlertTime != currentCandleOpenTime {
 			e.lastAlertTimes[alertKey] = currentCandleOpenTime
-			alertType := fmt.Sprintf("%s 이탈", indicatorType)
+
+			alertType := "Breakdown"
 			if isBreakout {
-				alertType = fmt.Sprintf("%s 돌파", indicatorType)
+				alertType = "Breakout"
 			}
+
+			indicatorName := fmt.Sprintf("%s_%d", indicatorType, period)
+
 			alertsChan <- Alert{
-				Symbol: symbol, Timeframe: timeframe, Type: alertType, Period: period,
-				Price: currentPrice, Volume: prevCandle.QuoteAssetVolume, Timestamp: time.Now(),
+				Symbol:    symbol,
+				Timeframe: timeframe,
+				Type:      alertType,
+				Indicator: indicatorName,
+				Price:     currentPrice,
+				Volume:    prevCandle.QuoteAssetVolume,
+				Timestamp: time.Now(),
 			}
 		}
 		e.Unlock()
@@ -485,40 +508,56 @@ func (ui *TerminalUI) addAlert(alert Alert) {
 	ui.alerts = append(ui.alerts, alert)
 }
 
-// display는 수집된 알림을 정렬하여 터미널에 출력합니다.
+// display는 수집된 알림을 정렬하여 새로운 형식으로 터미널에 출력합니다.
 func (ui *TerminalUI) display() {
 	ui.alertsMux.Lock()
 	defer ui.alertsMux.Unlock()
 
-	// 정렬 기준: 1.거래대금(내림차순) -> 2.타임프레임 -> 3.지표타입 -> 4.기간
-	sort.Slice(ui.alerts, func(i, j int) bool {
-		if ui.alerts[i].Volume != ui.alerts[j].Volume { return ui.alerts[i].Volume > ui.alerts[j].Volume }
-		if ui.alerts[i].Timeframe != ui.alerts[j].Timeframe { return ui.alerts[i].Timeframe < ui.alerts[j].Timeframe }
-		if ui.alerts[i].Type != ui.alerts[j].Type { return ui.alerts[i].Type < ui.alerts[j].Type }
-		return ui.alerts[i].Period < ui.alerts[j].Period
-	})
-
-	fmt.Print(Clear)
-	fmt.Printf("%s[바이낸스 HFT 스크리너] | 현재 시간: %s%s\n\n", ColorBold, time.Now().Format("2006-01-02 15:04:05"), ColorReset)
-
-	limit := 20
-	if len(ui.alerts) < limit { limit = len(ui.alerts) }
-
-	ui.lastSymbol = ""
-	for i := 0; i < limit; i++ {
-		alert := ui.alerts[i]
-		color := ColorRed
-		if strings.Contains(alert.Type, "돌파") { color = ColorGreen }
-		symbolStyle := ""
-		if alert.Symbol == ui.lastSymbol { symbolStyle = Italic }
-
-		fmt.Printf("%s%s[%-8s]%s %-10s | %-12s (%3d) | Price: %12.4f | Volume: %14.2f\n",
-			color, symbolStyle, alert.Timeframe, ColorReset, alert.Symbol,
-			alert.Type, alert.Period, alert.Price, alert.Volume)
-		ui.lastSymbol = alert.Symbol
+	if len(ui.alerts) == 0 {
+		return
 	}
 
-	ui.alerts = ui.alerts[:0] // 화면에 표시된 알림은 비워서 다음 주기에 새로운 알림만 표시
+	// 정렬 기준: 1.거래대금(내림차순) -> 2.타임프레임 -> 3.지표타입
+	sort.Slice(ui.alerts, func(i, j int) bool {
+		if ui.alerts[i].Volume != ui.alerts[j].Volume {
+			return ui.alerts[i].Volume > ui.alerts[j].Volume
+		}
+		if ui.alerts[i].Timeframe != ui.alerts[j].Timeframe {
+			return ui.alerts[i].Timeframe < ui.alerts[j].Timeframe
+		}
+		return ui.alerts[i].Indicator < ui.alerts[j].Indicator
+	})
+
+	fmt.Print(Clear) // 화면을 지우고 다시 그림
+
+	limit := 20
+	if len(ui.alerts) < limit {
+		limit = len(ui.alerts)
+	}
+
+	for i := 0; i < limit; i++ {
+		alert := ui.alerts[i]
+
+		// 심볼 형식 변환 (예: BTCUSDT -> BTC-USDT)
+		formattedSymbol := alert.Symbol
+		for _, asset := range []string{"USDT", "USDC", "BTC", "ETH"} {
+			if strings.HasSuffix(formattedSymbol, asset) {
+				base := strings.TrimSuffix(formattedSymbol, asset)
+				formattedSymbol = fmt.Sprintf("%s-%s", base, asset)
+				break
+			}
+		}
+
+		fmt.Printf("Symbol: %s | Timeframe: %s | Type: %s | Price: %.2f | Indicator: %s\n",
+			formattedSymbol,
+			alert.Timeframe,
+			alert.Type,
+			alert.Price,
+			alert.Indicator,
+		)
+	}
+
+	ui.alerts = ui.alerts[:0] // 다음 주기를 위해 알림 버퍼를 비움
 }
 
 // --- 6단계: 데이터베이스 연동 (목업) ---
